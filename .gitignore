@@ -1,0 +1,10 @@
+# temporary files
+~*
+.DS_Store
+
+# sample orcids
+sample.txt
+
+# see: https://gist.github.com/jlumbroso/f9c18f116e3fa5250bbd388245b10f1d
+combine_for_model.py
+prompt*.txt

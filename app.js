@@ -1,17 +1,20 @@
-async function getEmailFromORCiD(orcid) {
-    const apiUrl = `https://pub.orcid.org/v3.0/${orcid}/email`;
+async function getORCiDData(orcid) {
+    const apiUrl = `https://pub.orcid.org/v3.0/${orcid}/person`;
     try {
         const response = await fetch(apiUrl, {
-            headers: { Accept: 'application/json' },
+            headers: { Accept: 'application/vnd.orcid+json' },
         });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        return data.email && data.email.length > 0 ? data.email[0].email : null;
+        console.log("Data from ORCiD:", data);
+        const fullName = data['name']['given-names']['value'] + ' ' + data['name']['family-name']['value'];
+        const email = data['emails']['email'] && data['emails']['email'].length > 0 ? data['emails']['email'][0].email : null;
+        return { fullName, email };
     } catch (error) {
-        console.error('Error fetching email from ORCiD:', error);
-        return null;
+        console.error('Error fetching data from ORCiD:', error);
+        return { fullName: null, email: null };
     }
 }
 
@@ -20,22 +23,21 @@ function extractEmails() {
     const orcidPattern = /\b\d{4}-\d{4}-\d{4}-\d{3}[0-9Xx]\b/g;
     const orcids = [...text.matchAll(orcidPattern)].map(match => match[0]);
 
-    // Only clear errors, maintain existing emails
     document.querySelectorAll('.list-group-item-danger').forEach(e => e.remove());
 
     orcids.forEach(async (orcid) => {
-        const email = await getEmailFromORCiD(orcid);
+        const { fullName, email } = await getORCiDData(orcid);
         if (email && !document.querySelector(`[data-email="${email}"]`)) {
             const listItem = document.createElement('li');
-            listItem.textContent = email;
-            listItem.dataset.email = email; // Track by email to prevent duplicates
+            listItem.textContent = `${fullName} <${email}>`;
+            listItem.dataset.email = email;
             listItem.classList.add('list-group-item', 'list-group-item-success');
-            document.getElementById('emailList').prepend(listItem); // Prepend to keep successes at the top
+            document.getElementById('emailList').prepend(listItem);
         } else if (!email) {
             const errorItem = document.createElement('li');
-            errorItem.textContent = `No public email exists for ORCiD ${orcid}`;
+            errorItem.textContent = `${fullName ? fullName + ' ' : ''}(${orcid}) - No public email exists`;
             errorItem.classList.add('list-group-item', 'list-group-item-danger');
-            document.getElementById('emailList').appendChild(errorItem); // Append to keep errors at the bottom
+            document.getElementById('emailList').appendChild(errorItem);
         }
     });
 }

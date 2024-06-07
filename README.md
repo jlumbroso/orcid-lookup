@@ -2,10 +2,13 @@
 
 The ORCiD Email Lookup is a simple web-based tool that allows you to extract email addresses associated with ORCiD (Open Researcher and Contributor ID) identifiers from a given text. This tool is particularly useful for cross-referencing and deduplicating email lists, such as those used in academic conferences or research communities.
 
+Here is an example using my ORCiD (0000-0002-5563-687X) and Bob Sedgewick's ORCiD (0009-0001-7238-7860):
+![ORCiD Email Lookup Screenshot for 0000-0002-5563-687X and 0009-0001-7238-7860](screenshot.png)
+
 ## Features
 
 - Extract ORCiD identifiers from a given text
-- Retrieve the associated email address for each ORCiD using the ORCiD API
+- Retrieve the associated name and — if publicly available — email address for each ORCiD using the ORCiD API
 - Display the extracted emails in a list, categorized as success or error
 - Copy all successfully retrieved emails to the clipboard with a single click
 - Erase errors or clear the entire email list
