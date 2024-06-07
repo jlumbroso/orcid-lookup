@@ -12,7 +12,10 @@
             <div class="col-md-6">
                 <h1 class="mb-4 text-center">ORCiD Email Lookup</h1>
                 <textarea id="inputText" class="form-control mb-3" rows="5" placeholder="Paste text with ORCiDs here..."></textarea>
-                <button onclick="extractEmails()" class="btn btn-success w-100">Extract Emails</button>
+                <button onclick="extractEmails()" class="btn btn-success w-100 mb-2">Extract Emails</button>
+                <button onclick="copyEmails()" class="btn btn-primary w-100 mb-2">Copy Emails</button>
+                <button onclick="eraseErrors()" class="btn btn-warning w-100 mb-2">Erase Errors</button>
+                <button onclick="eraseAll()" class="btn btn-danger w-100 mb-2">Erase All</button>
                 <ul id="emailList" class="list-group mt-3"></ul>
             </div>
         </div>
